@@ -23,7 +23,7 @@ function ShelfPage() {
         return(
           <div key={item.id}>
           <p >{item.description}</p>
-          <img src={item.image_url}/>
+          <img className="items" src={item.image_url}/>
           </div>)
       })}
 
