@@ -8,3 +8,5 @@ const displayReducer = (state = [], action) => {
             return state;
     }
 }
+
+export default displayReducer;
