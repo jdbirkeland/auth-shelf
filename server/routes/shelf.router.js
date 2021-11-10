@@ -6,6 +6,7 @@ const router = express.Router();
  * Get all of the items on the shelf
  */
 router.get('/', (req, res) => {
+  
   res.sendStatus(200); // For testing only, can be removed
 });
 
