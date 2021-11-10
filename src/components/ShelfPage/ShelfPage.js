@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
+import ShelfForm from '../ShelfForm/ShelfForm';
+
 
 function ShelfPage() {
 
@@ -17,6 +19,7 @@ function ShelfPage() {
 
   return (
     <div className="container">
+      <ShelfForm />
       <h2>Shelf</h2>
 
       {display.map(item => {

@@ -20,8 +20,28 @@ router.get('/', rejectUnauthenticated, (req, res) => {
 /**
  * Add an item for the logged in user to the shelf
  */
-router.post('/', (req, res) => {
+router.post('/', rejectUnauthenticated, (req, res) => {
+  console.log('shelf POST');
+  console.log('isAuthenticated?', req.isAuthenticated());
+  console.log('user', req.user);
+  
   // endpoint functionality
+  const sqlText = `
+  INSERT INTO "item" ("description", "image_url", "user_id")
+  VALUES ($1, $2, $3);
+  `;
+
+  const userId = req.user.id
+  const values = [req.body.description, req.body.image_url, userId]
+
+  pool 
+    .query(sqlText, values)
+    .then(result => {
+      res.sendStatus(201);
+    })
+    .catch(err => {
+      res.sendStatus(500);
+    })
 });
 
 /**
