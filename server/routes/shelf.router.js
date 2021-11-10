@@ -15,7 +15,7 @@ router.get('/', rejectUnauthenticated, (req, res) => {
       console.log('Errrrrror', err);
       res.sendStatus(500);
     });
-});
+});// end Get
 
 /**
  * Add an item for the logged in user to the shelf
@@ -42,7 +42,7 @@ router.post('/', rejectUnauthenticated, (req, res) => {
     .catch(err => {
       res.sendStatus(500);
     })
-});
+});//end Post
 
 /**
  * Delete an item if it's something the logged in user added
