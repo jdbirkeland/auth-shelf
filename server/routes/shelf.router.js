@@ -7,8 +7,10 @@ const { rejectUnauthenticated } = require('../modules/authentication-middleware'
  */
 router.get('/', rejectUnauthenticated, (req, res) => {
   console.log(req.user);
-  let queryText = `SELECT * FROM "item" WHERE "user_id" = $1`;
-  pool.query(queryText, [req.user.id])
+  
+  let queryText = `SELECT * FROM "item"`;
+
+  pool.query(queryText)
     .then(result => {
       res.send(result.rows);
     }).catch(err => {
@@ -24,7 +26,7 @@ router.post('/', rejectUnauthenticated, (req, res) => {
   console.log('shelf POST');
   console.log('isAuthenticated?', req.isAuthenticated());
   console.log('user', req.user);
-  
+
   // endpoint functionality
   const sqlText = `
   INSERT INTO "item" ("description", "image_url", "user_id")
@@ -34,7 +36,7 @@ router.post('/', rejectUnauthenticated, (req, res) => {
   const userId = req.user.id
   const values = [req.body.description, req.body.image_url, userId]
 
-  pool 
+  pool
     .query(sqlText, values)
     .then(result => {
       res.sendStatus(201);
@@ -47,7 +49,25 @@ router.post('/', rejectUnauthenticated, (req, res) => {
 /**
  * Delete an item if it's something the logged in user added
  */
-router.delete('/:id', (req, res) => {
+router.delete('/:id', rejectUnauthenticated, (req, res) => {
+  const idToDelete = req.params.id
+  const idUser = req.user.id
+  console.log('This is what we are deleting -->', idToDelete, idUser);
+
+  //query text needs to combine item id and check user id against the databases user_id
+  let queryText = `
+  DELETE FROM "item"
+  WHERE "id" = $1 AND "user_id" = $2
+  `;
+
+  pool.query(queryText, [idToDelete, idUser])
+    .then(respond => {
+      res.send(200);
+    })
+    .catch(error => {
+      console.log('ERROR IN DELETE', error);
+      res.sendStatus(500);
+    })
   // endpoint functionality
 });
 

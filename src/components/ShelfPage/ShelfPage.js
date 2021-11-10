@@ -14,7 +14,13 @@ function ShelfPage() {
     dispatch({type: 'FETCH_DISPLAY'})
   }, []);
 
-
+const handleDelete = (item) => {
+  console.log(item.id);
+  dispatch({ 
+    type: 'DELETE_ITEM',
+    payload: item.id
+  })
+}
 
 
   return (
@@ -27,6 +33,7 @@ function ShelfPage() {
           <div key={item.id}>
           <p >{item.description}</p>
           <img className="items" src={item.image_url}/>
+          <button onClick={() => handleDelete(item)}>Delete Me</button>
           </div>)
       })}
 
