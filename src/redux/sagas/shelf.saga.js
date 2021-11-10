@@ -10,8 +10,21 @@ function* fetchDisplay() {
     }
 }
 
+
+//function to delete
+function* deleteItem(action) {
+    try {
+        yield axios.delete(`/api/shelf/${action.payload}`);
+        yield put({ type: 'FETCH_DISPLAY' })
+    } catch (error) {
+        console.log('Error in Delete', error);
+    }
+} //end deleteItem
+
+
 function* displaySaga() {
     yield takeLatest('FETCH_DISPLAY', fetchDisplay)
+    yield takeLatest('DELETE_ITEM', deleteItem)
 }
 
 export default displaySaga;
