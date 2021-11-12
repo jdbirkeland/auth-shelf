@@ -21,10 +21,22 @@ function* deleteItem(action) {
     }
 } //end deleteItem
 
+//function to update
+function* updateItem(action) {
+    try{
+        console.log(action.payload);
+        yield axios.put(`/api/shelf/${action.payload.id}`, action.payload);
+        yield put({type: 'FETCH_DISPLAY'})
+    } catch(error) {
+        console.log('Error in Update', error);
+    }
+}//end updateItem
+
 
 function* displaySaga() {
     yield takeLatest('FETCH_DISPLAY', fetchDisplay)
     yield takeLatest('DELETE_ITEM', deleteItem)
+    yield takeLatest('EDIT_ITEM', updateItem)
 }
 
 export default displaySaga;

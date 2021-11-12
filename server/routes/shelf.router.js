@@ -17,7 +17,7 @@ router.get('/', rejectUnauthenticated, (req, res) => {
       console.log('Errrrrror', err);
       res.sendStatus(500);
     });
-});
+});// end Get
 
 /**
  * Add an item for the logged in user to the shelf
@@ -44,7 +44,7 @@ router.post('/', rejectUnauthenticated, (req, res) => {
     .catch(err => {
       res.sendStatus(500);
     })
-});
+});//end Post
 
 /**
  * Delete an item if it's something the logged in user added
@@ -74,7 +74,23 @@ router.delete('/:id', rejectUnauthenticated, (req, res) => {
 /**
  * Update an item if it's something the logged in user added
  */
-router.put('/:id', (req, res) => {
+router.put('/:id', rejectUnauthenticated, (req, res) => {
+  const idToUpdate = req.params.id
+
+  console.log('This is what we are Updating -->', idToUpdate);
+  console.log('this is req.', req.params);
+
+  let queryText= `UPDATE "item"
+  SET "description" = $1, "image_url" = $2
+  WHERE "id" = $3;`;
+  let values = [req.body.description, req.body.image_url, idToUpdate]
+  pool.query(queryText, values)
+  .then(respond => {
+    res.send(200);
+  }).catch(error => {
+    console.log('ERROR IN UPDATE', error);
+    res.sendStatus(500);
+  })
   // endpoint functionality
 });
 
