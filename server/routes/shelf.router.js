@@ -74,7 +74,23 @@ router.delete('/:id', rejectUnauthenticated, (req, res) => {
 /**
  * Update an item if it's something the logged in user added
  */
-router.put('/:id', (req, res) => {
+router.put('/:id', rejectUnauthenticated, (req, res) => {
+  const idToUpdate = req.params.id
+
+  console.log('This is what we are Updating -->', idToUpdate);
+  console.log('this is req.', req.params);
+
+  let queryText= `UPDATE "item"
+  SET "description" = $1, "image_url" = $2
+  WHERE "id" = $3;`;
+  let values = [req.body.description, req.body.image_url, idToUpdate]
+  pool.query(queryText, values)
+  .then(respond => {
+    res.send(200);
+  }).catch(error => {
+    console.log('ERROR IN UPDATE', error);
+    res.sendStatus(500);
+  })
   // endpoint functionality
 });
 
