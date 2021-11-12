@@ -2,6 +2,10 @@ const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
 const { rejectUnauthenticated } = require('../modules/authentication-middleware');
+
+// const client = require('filestack-js').init("A09e78cDRI65bPtSGZMEwz");
+// client.picker().open();
+
 /**
  * Get all of the items on the shelf
  */
